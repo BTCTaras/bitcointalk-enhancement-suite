@@ -22,7 +22,7 @@
 			sidebar.getElementsByTagName("img")[0].parentNode.removeChild(sidebar.getElementsByTagName("img")[0]);
 			
 			// Insert a silver coin as a replacement
-			sidebar.getElementsByTagName("br")[0].insertAdjacentHTML("afterend", "<img src=\"https://i.krist.club/eE1i.png\" alt=\"*\" border=\"0\">");
+			sidebar.getElementsByTagName("br")[0].insertAdjacentHTML("afterend", "<img src=\""+chrome.extension.getURL("images/newbie.png")+"\" alt=\"*\" border=\"0\">");
 		}
 		
 		// Check if we should apply a legacy scammer tag
@@ -40,7 +40,7 @@
 			
 			// Insert the scammer tag image (the five red X's)
 			for (var i = 0; i < 5; i++)
-				sidebar.getElementsByTagName("br")[1].insertAdjacentHTML("afterend", "<img src=\"https://i.krist.club/iUOO.gif\" alt=\"X\" border=\"0\">");
+				sidebar.getElementsByTagName("br")[1].insertAdjacentHTML("afterend", "<img src=\""+chrome.extension.getURL("images/scammer.gif")+"\" alt=\"X\" border=\"0\">");
 		}
 	});
 	

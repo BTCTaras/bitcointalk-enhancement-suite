@@ -14,5 +14,9 @@
     "https://*/*",
     "http://*/*",
     "tabs"
+  ],
+  "web_accessible_resources": [
+	"images/scammer.gif",
+	"images/newbie.png"
   ]
 }
