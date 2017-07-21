@@ -16,6 +16,7 @@
     "tabs"
   ],
   "web_accessible_resources": [
+	"images/blacklist.gif",
 	"images/scammer.gif",
 	"images/newbie.png",
 	"options/options.html"
