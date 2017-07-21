@@ -122,4 +122,32 @@
 				inboxlink.innerHTML = "MY MESSAGES <strong style='background: red; padding-right: 1px;'>["+messages+"]</strong>";
 		}
 	});
+	
+	var optionslink = "";
+	document.querySelectorAll("a").forEach(function(lnk) {
+		if (lnk.innerHTML == "Look and Layout Preferences") {
+			optionslink = lnk.getAttribute("href") + ";btes";
+		}
+		if (optionslink.length > 0)
+			if (lnk.innerHTML == "Ignore Boards Preferences")
+				lnk.insertAdjacentHTML("afterend", "<br/><a href=\""+optionslink+"\" style=\"color: orange;\">BitcoinTalk Enhancement Suite Options</a>");
+	});
+	
+	if (window.location.href.substr(-5,5) == ";btes") {
+		document.querySelectorAll("#creator").forEach(function(settingspanel) {
+			settingspanel.innerHTML = "<iframe src=\""+chrome.runtime.getURL("options/options.html")+"\" frameBorder=\"0\" width=\"100%\" style=\"min-height: 640px;\"></iframe>";
+		});
+		
+		document.querySelectorAll("a").forEach(function(lnk) {
+			if (lnk.innerHTML == "Look and Layout Preferences") {
+				lnk.setAttribute("style", "font-weight: normal !important;");
+			}
+		});
+		
+		document.querySelectorAll("a").forEach(function(lnk) {
+			if (lnk.innerHTML == "BitcoinTalk Enhancement Suite Options") {
+				lnk.setAttribute("style", "color: orange; font-weight: bold !important;");
+			}
+		});
+	}
 })();

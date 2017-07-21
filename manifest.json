@@ -17,6 +17,7 @@
   ],
   "web_accessible_resources": [
 	"images/scammer.gif",
-	"images/newbie.png"
+	"images/newbie.png",
+	"options/options.html"
   ]
 }
