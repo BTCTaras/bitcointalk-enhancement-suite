@@ -20,7 +20,7 @@
 		
 		// Check if the user is a newbie (not jr. member!)
 		var rank = sidebar.getElementsByTagName("div")[0].innerHTML.substr(0,15)
-		if (rank.includes("Brand new") || rank.includes("Newbie")) {
+		if (rank.includes("Brand") || rank.includes("Newbie")) {
 			// Delete the newbie's one gold coin (they'll only have one if they are a newbie)
 			sidebar.getElementsByTagName("img")[0].parentNode.removeChild(sidebar.getElementsByTagName("img")[0]);
 			
@@ -68,6 +68,11 @@
 	// Delete the button to insert a flash video from the post editor - the feature is completely disabled on BitcoinTalk and therefore useless
 	document.querySelectorAll("[onclick=\"surroundText('[flash=200,200]', '[/flash]', document.forms.postmodify.message); return false;\"]").forEach(function(btn) {
 		btn.parentNode.removeChild(btn);
+	});
+	
+	// Insert some new smileys!!!
+	document.querySelectorAll("[onclick=\"replaceText(' :\\\\'(', document.forms.postmodify.message); return false;\"]").forEach(function(btn) {
+		btn.insertAdjacentHTML("afterend", "<a href=\"javascript:void(0);\" onclick=\"replaceText(' [img]https://i.krist.club/0UaJ.png[/img]', document.forms.postmodify.message); return false;\"><img style=\"margin-left: 8px;\" src=\"https://i.krist.club/0UaJ.png\" align=\"bottom\" alt=\"Defeated\" title=\"Defeated\"></a>");
 	});
 	
 	// Select the text box for the post editor
@@ -145,6 +150,60 @@
 				inboxlink.innerHTML = "MY MESSAGES <strong style='background: red; padding-right: 1px;'>["+messages+"]</strong>";
 		}
 	});*/
+	
+	// Are we on a trust summary page?
+	if (document.getElementsByTagName("body")[0].getElementsByTagName("div")[1].getElementsByTagName("h3")[0].innerHTML.includes("Trust summary for")) {
+		// Make the trust tables more compact and readable
+		document.querySelectorAll("tbody").forEach(function(table) {
+			if (table.getElementsByTagName("tr")[0].getElementsByTagName("td")[0].innerHTML == "User") {
+				var feedback = [];
+				table.querySelectorAll("tr").forEach(function(row) {
+					var col = 0;
+					var username = "";
+					row.querySelectorAll("td").forEach(function(cell) {
+						col ++;
+						if (cell.className != "catbg3") {
+							var morecss = "";
+							if (col == 1) {
+								username = cell.getElementsByTagName("a")[0].innerHTML;
+							}
+							if (col == 3) {
+								morecss = " text-align: right;";
+								cell.innerHTML = cell.innerHTML + " BTC";
+								if (cell.innerHTML == "0.00000000 BTC" || cell.innerHTML == " BTC") {
+									cell.innerHTML = "<i style=\"color: gray;\">None</i>";
+								}
+							}
+							if (col == 4)
+								morecss = " text-align: center;";
+							if (col != 5) {
+								morecss = morecss + " white-space: nowrap;"; 
+							} else {
+								var key = username + ":" + cell.innerHTML.replace(/<!--[\s\S]*?-->/g,"").split(" ").join("");
+								if (feedback.indexOf(key) > -1) {
+									cell.innerHTML = "<i style=\"color: gray;\" title=\""+cell.innerHTML.replace(/<!--[\s\S]*?-->/g,"").split("<br>").join("").split("\"").join("''")+"\">Duplicate feedback hidden</i>";
+								} else {
+									feedback.push(key);
+									var type = "<b style=\"color: blue;\">Comment</b> ";
+									if (cell.getAttribute("style"))
+										if (cell.getAttribute("style").includes("red")) {
+											type = "<b style=\"color: red;\">Negative</b> ";
+											morecss = morecss + " background: #ffcccc;";
+										} else if (cell.getAttribute("style").includes("bold")) {
+											type = "<b style=\"color: green;\">Positive</b> ";
+											morecss = morecss + " background: #ccffcc;";
+										}
+									cell.innerHTML = type + cell.innerHTML;
+									//cell.innerHTML = username;
+								}
+							}
+							cell.setAttribute("style","padding-top: 1px; padding-bottom: 1px; vertical-align: top;" + morecss);
+						}
+					});
+				});
+			}
+		});
+	}
 	
 	var optionslink = "";
 	document.querySelectorAll("a").forEach(function(lnk) {
