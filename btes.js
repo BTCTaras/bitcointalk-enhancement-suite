@@ -144,6 +144,21 @@
 			}
 		});
 		
+		// On the profile page, we want to add a row to the table that displays how much activity a user needs to rank up again
+		// We're going to look through all <td>s and detect if one of them is Activity
+		document.querySelectorAll("td").forEach(function(td) {
+			if (td.innerHTML == "<b>Activity:</b>") {
+				var activity = parseInt(td.parentNode.getElementsByTagName("td")[1].innerHTML);
+				
+				if (activity < 480) {
+					td.parentNode.insertAdjacentHTML("afterend","<tr><td><b>Next rank at:</b></td><td>"+(Math.pow(2,Math.max(0,Math.ceil(Math.log2((activity+1)/30))))*30)+"</td></tr>");
+				}
+				
+				// Additionally, make a link here to a thread explaining what Activity even is
+				td.getElementsByTagName("b")[0].innerHTML = "<a href=\"https://bitcointalk.org/index.php?topic=237597.0\">Activity</a>:";
+			}
+		});
+		
 		document.querySelectorAll(".maintab_active_back").forEach(function(maintab) {
 			// Locate the MY MESSAGES tab
 			var inboxlink = maintab.parentNode.getElementsByTagName("td")[8].getElementsByTagName("a")[0];
