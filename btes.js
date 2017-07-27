@@ -132,7 +132,7 @@
 		});
 		
 		// On the showposts page, if a post has a code block with a very long unbroken line, the table of posts will be distorted and very hard to read.
-		/* This will fix that by limiting how wide code blocks can be drawn
+		// This will fix that by limiting how wide code blocks can be drawn
 		document.querySelectorAll(".titlebg").forEach(function(testForPostList) {
 			// Determine if this page is a list of a user's posts
 			if (testForPostList.getElementsByTagName("td")[0].innerHTML.includes("Show Posts")) {
@@ -142,9 +142,8 @@
 					codeblock.setAttribute("style", "max-width: 800px;");
 				});
 			}
-		});*/
+		});
 		
-		/*
 		document.querySelectorAll(".maintab_active_back").forEach(function(maintab) {
 			// Locate the MY MESSAGES tab
 			var inboxlink = maintab.parentNode.getElementsByTagName("td")[8].getElementsByTagName("a")[0];
@@ -154,60 +153,64 @@
 				if (!messages.includes("["))
 					inboxlink.innerHTML = "MY MESSAGES <strong style='background: red; padding-right: 1px;'>["+messages+"]</strong>";
 			}
-		});*/
+		});
 		
 		// Are we on a trust summary page?
-		if (document.getElementsByTagName("body")[0].getElementsByTagName("div")[1].getElementsByTagName("h3")[0].innerHTML.includes("Trust summary for")) {
-			// Make the trust tables more compact and readable
-			document.querySelectorAll("tbody").forEach(function(table) {
-				if (table.getElementsByTagName("tr")[0].getElementsByTagName("td")[0].innerHTML == "User") {
-					var feedback = [];
-					table.querySelectorAll("tr").forEach(function(row) {
-						var col = 0;
-						var username = "";
-						row.querySelectorAll("td").forEach(function(cell) {
-							col ++;
-							if (cell.className != "catbg3") {
-								var morecss = "";
-								if (col == 1) {
-									username = cell.getElementsByTagName("a")[0].innerHTML;
-								}
-								if (col == 3) {
-									morecss = " text-align: right;";
-									cell.innerHTML = cell.innerHTML + " BTC";
-									if (cell.innerHTML == "0.00000000 BTC" || cell.innerHTML == " BTC") {
-										cell.innerHTML = "<i style=\"color: gray;\">None</i>";
+		try {
+			if (document.getElementsByTagName("body")[0].getElementsByTagName("div")[1].getElementsByTagName("h3")[0].innerHTML.includes("Trust summary for")) {
+				// Make the trust tables more compact and readable
+				document.querySelectorAll("tbody").forEach(function(table) {
+					if (table.getElementsByTagName("tr")[0].getElementsByTagName("td")[0].innerHTML == "User") {
+						var feedback = [];
+						table.querySelectorAll("tr").forEach(function(row) {
+							var col = 0;
+							var username = "";
+							row.querySelectorAll("td").forEach(function(cell) {
+								col ++;
+								if (cell.className != "catbg3") {
+									var morecss = "";
+									if (col == 1) {
+										username = cell.getElementsByTagName("a")[0].innerHTML;
 									}
-								}
-								if (col == 4)
-									morecss = " text-align: center;";
-								if (col != 5) {
-									morecss = morecss + " white-space: nowrap;"; 
-								} else {
-									var key = username + ":" + cell.innerHTML.replace(/<!--[\s\S]*?-->/g,"").split(" ").join("");
-									if (feedback.indexOf(key) > -1) {
-										cell.innerHTML = "<i style=\"color: gray;\" title=\""+cell.innerHTML.replace(/<!--[\s\S]*?-->/g,"").split("<br>").join("").split("\"").join("''")+"\">Duplicate feedback hidden</i>";
+									if (col == 3) {
+										morecss = " text-align: right;";
+										cell.innerHTML = cell.innerHTML + " BTC";
+										if (cell.innerHTML == "0.00000000 BTC" || cell.innerHTML == " BTC") {
+											cell.innerHTML = "<i style=\"color: gray;\">None</i>";
+										}
+									}
+									if (col == 4)
+										morecss = " text-align: center;";
+									if (col != 5) {
+										morecss = morecss + " white-space: nowrap;"; 
 									} else {
-										feedback.push(key);
-										var type = "<b style=\"color: blue;\">Comment</b> ";
-										if (cell.getAttribute("style"))
-											if (cell.getAttribute("style").includes("red")) {
-												type = "<b style=\"color: red;\">Negative</b> ";
-												morecss = morecss + " background: #ffcccc;";
-											} else if (cell.getAttribute("style").includes("bold")) {
-												type = "<b style=\"color: green;\">Positive</b> ";
-												morecss = morecss + " background: #ccffcc;";
-											}
-										cell.innerHTML = type + cell.innerHTML;
-										//cell.innerHTML = username;
+										var key = username + ":" + cell.innerHTML.replace(/<!--[\s\S]*?-->/g,"").split(" ").join("");
+										if (feedback.indexOf(key) > -1) {
+											cell.innerHTML = "<i style=\"color: gray;\" title=\""+cell.innerHTML.replace(/<!--[\s\S]*?-->/g,"").split("<br>").join("").split("\"").join("''")+"\">Duplicate feedback hidden</i>";
+										} else {
+											feedback.push(key);
+											var type = "<b style=\"color: blue;\">Comment</b> ";
+											if (cell.getAttribute("style"))
+												if (cell.getAttribute("style").includes("red")) {
+													type = "<b style=\"color: red;\">Negative</b> ";
+													morecss = morecss + " background: #ffcccc;";
+												} else if (cell.getAttribute("style").includes("bold")) {
+													type = "<b style=\"color: green;\">Positive</b> ";
+													morecss = morecss + " background: #ccffcc;";
+												}
+											cell.innerHTML = type + cell.innerHTML;
+											//cell.innerHTML = username;
+										}
 									}
+									cell.setAttribute("style","padding-top: 1px; padding-bottom: 1px; vertical-align: top;" + morecss);
 								}
-								cell.setAttribute("style","padding-top: 1px; padding-bottom: 1px; vertical-align: top;" + morecss);
-							}
+							});
 						});
-					});
-				}
-			});
+					}
+				});
+			}
+		} catch(err) {
+			
 		}
 		
 		var optionslink = "";
