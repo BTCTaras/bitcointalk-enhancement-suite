@@ -274,8 +274,10 @@
 	});
 	
 	if (window.location.href.substr(-5,5) == ";btes") {
+		document.title = "Profile - BitcoinTalk Enhancement Suite Options";
+		
 		document.querySelectorAll("#creator").forEach(function(settingspanel) {
-			settingspanel.innerHTML = "<iframe src=\""+chrome.runtime.getURL("options/options.html")+"\" frameBorder=\"0\" width=\"100%\" style=\"min-height: 640px;\"></iframe>";
+			settingspanel.innerHTML = "<iframe src=\""+chrome.runtime.getURL("options/options.html")+"\" frameBorder=\"0\" width=\"100%\" style=\"min-height: 1000px;\"></iframe>";
 		});
 		
 		document.querySelectorAll("a").forEach(function(lnk) {
