@@ -23,6 +23,9 @@
 	else
 		return false;
 	
+	var header = document.getElementById("variousheadlinks");
+	header.insertAdjacentHTML("afterend","<td class=\"windowbg\" style=\"text-align: center;\">BTES&nbsp;1.0.0<hr/><small><a>Thread</a><br/><a href=\"https://bitcointalk.org/index.php?action=profile;sa=theme;btes\">Settings</a></small></td>");
+	
 	var account_appraisals_relevant = false;
 	document.querySelectorAll(".nav").forEach(function(nav) {
 		if (nav.innerHTML == "Invites & Accounts")
@@ -85,6 +88,17 @@
 			// Insert the scammer tag image (the five red X's)
 			for (var i = 0; i < 5; i++)
 				sidebar.getElementsByTagName("br")[1].insertAdjacentHTML("afterend", "<img src=\""+chrome.extension.getURL("images/scammer.gif")+"\" alt=\"X\" border=\"0\">");
+		}
+		
+		// Add a DefaultTrust badge to DT1/2 users, on boards where trust scores are visible
+		var dt_depth = 5; // pretend this is infinity
+		if (defaulttrust2.includes(user)) dt_depth = 2;
+		if (defaulttrust1.includes(user)) dt_depth = 1;
+		if (dt_depth < 5) {
+			// Find the only trustscore div in the sidebar, if it exists
+			sidebar.querySelectorAll(".trustscore").forEach(function(a) {
+				a.insertAdjacentHTML("afterend","<b style=\"color: #008000;\"> <image src=\""+chrome.extension.getURL("images/defaulttrust.png")+"\" style=\"width: 16px; position: relative; top: 4px; margin-right: 2px;\">DT" + dt_depth + "</b>");
+			});
 		}
 		
 		// Add an "Appraise" button to sidebar links on boards where you are more likely to need to know the estimated value of an account
