@@ -115,20 +115,18 @@
 	
 	// Loop through quotes in posts to highlight the ones quoting the user
 	document.querySelectorAll(".quoteheader").forEach(function(quoteheader) {
-		//var quotebody = quoteheader.nextSibling();
 		if (quoteheader.innerHTML.includes("Quote from: " + displayname + " on")) {
 			quoteheader.getElementsByTagName("a")[0].setAttribute("style", "color: orange;");
 			quoteheader.nextSibling.setAttribute("style", "border: 1px solid #f1d2be; background-color: #f9eee6;");
 		}
-		//quoteheader.innerHTML = displayname;
 	});
 		
-	// Delete the button to insert a flash video from the post editor - the feature is completely disabled on BitcoinTalk and therefore useless
+	// Delete the button to insert a flash video from the post editor - the feature is completely disabled on BitcoinTalk and is therefore useless
 	document.querySelectorAll("[onclick=\"surroundText('[flash=200,200]', '[/flash]', document.forms.postmodify.message); return false;\"]").forEach(function(btn) {
 		btn.parentNode.removeChild(btn);
 	});
 	
-	// Insert some new smileys!!!
+	// Insert new smileys!!!
 	document.querySelectorAll("[onclick=\"replaceText(' :\\\\'(', document.forms.postmodify.message); return false;\"]").forEach(function(btn) {
 		btn.insertAdjacentHTML("afterend", "<a href=\"javascript:void(0);\" onclick=\"replaceText(' [img]https://i.krist.club/0UaJ.png[/img]', document.forms.postmodify.message); return false;\"><img style=\"margin-left: 8px;\" src=\"https://i.krist.club/0UaJ.png\" align=\"bottom\" alt=\"Defeated\" title=\"Defeated\"></a>");
 	});
@@ -136,7 +134,10 @@
 	// Select the text box for the post editor
 	document.querySelectorAll(".editor").forEach(function(editor) {
 		// Make a character counter above the textarea
-		editor.insertAdjacentHTML("beforebegin","<div style=\"width: 600px; max-width: 600px;\">Character count: <b id=\"btes_charcount\"></b> <span style=\"display: none;\" id=\"btes_warning\">(This post has exceeded BitcoinTalk's post size limit of 64000 characters!)</span></div>");
+		if (window.location.href.includes("forumProfile"))
+			editor.insertAdjacentHTML("beforebegin","<div style=\"width: 600px; max-width: 600px;\">Size: <b id=\"btes_charcount\"></b> <span style=\"display: none;\" id=\"btes_warning\">(This signature is too large to be usable by anyone!)</span><br/>Minimum rank: <b id=\"btes_minrank\"></b></div>");
+		else
+			editor.insertAdjacentHTML("beforebegin","<div style=\"width: 600px; max-width: 600px;\">Character count: <b id=\"btes_charcount\"></b> <span style=\"display: none;\" id=\"btes_warning\">(This post has exceeded BitcoinTalk's post size limit of 64000 characters!)</span></div>");
 		
 		// Delete the newbie warning from a quote in a PM
 		editor.value = editor.value.replace("[size=12pt][color=red]!!! WARNING: This user is a [i]newbie[/i]. If you are expecting a message from a more veteran member, then this is an [i]imposter[/i] !!![/color][/size]\n[hr]\n", "");
@@ -145,15 +146,18 @@
 		window.setInterval(function(){
 			var raw = document.querySelector(".editor").value;
 			var content = raw;
+			var type = window.location.href.includes("forumProfile") ? "sig" : "post";
+			var max_length = type == "sig" ? 4000 : 64000; // The highest acceptable length of a post's raw bbcode
+			var minrank = 0;
 			
 			// Don't count these characters as constructive
 			content = content.replace(/\r?\n|\r/g,"");
 			
-			// Don't count quoted text as original
+			// Don't count quoted text as original content
 			while ((content.indexOf("[quote") != -1))
 				content = content.replace(/\[quote[^\]]*\]((?!\[[[\/]*quote).)*\[\/quote\]/g,"");
 			
-			// Images shouldn't be considered as text
+			// For the purposes of this counter, images shouldn't be considered to be text
 			content = content.replace(/\[img[\s\S]*?\/img\]/gi, "");
 			
 			// Bitcoin symbols count as a single character
@@ -164,23 +168,89 @@
 			
 			var count = content.trim().length;
 			
-			// Achow's BitcoinTalk Account Price Estimator and many signature campaigns consider posts with fewer than 75 characters to be bad
-			if (count < 75)
-				document.getElementById("btes_charcount").setAttribute("style", "color: #DC143C;"); // red
-			else if (count >= 100) // You should strive for 100+!
-				document.getElementById("btes_charcount").setAttribute("style", "color: #008000;"); // green
-			else
-				document.getElementById("btes_charcount").setAttribute("style", "color: black;");
+			switch (type) {
+				case "post":
+					// Achow's BitcoinTalk Account Price Estimator and many signature campaigns consider posts with fewer than 75 characters to be undesirable
+					if (count < 75)
+						document.getElementById("btes_charcount").setAttribute("style", "color: #DC143C;"); // red
+					else if (count >= 100) // You should strive for 100+!
+						document.getElementById("btes_charcount").setAttribute("style", "color: #008000;"); // green
+					else
+						document.getElementById("btes_charcount").setAttribute("style", "color: black;");
 			
-			// If the raw post length is greater than 64000 characters, it is unacceptable and will be rejected, so let the user know
-			if (raw.length > 64000) {
+					// Display the number of characters that are original and "constructive"
+					document.getElementById("btes_charcount").innerHTML = count;
+				break;
+				case "sig":
+					// Calculate what minimum rank user can wear the signature
+					if (raw.length > 50)
+						minrank = 1;
+					if (raw.match(/\[url[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[table[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[center[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[font[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[pre[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[left[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[right[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[email[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[ftp[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[sup[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[sub[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[tt[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[list[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[code[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[quote[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[b[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[i[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[u[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[s[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.match(/\[hr[\s\S]*?\]/gi))
+						minrank = 1;
+					if (raw.length > 150)
+						minrank = 2;
+					if (raw.match(/\[color[\s\S]*?\]/gi))
+						minrank = 3;
+					if (raw.match(/\[size[\s\S]*?\]/gi))
+						minrank = 4;
+					if (raw.match(/\[glow[\s\S]*?\]/gi))
+						minrank = 5;
+					if (raw.match(/\[shadow[\s\S]*?\]/gi)) // not sure about this one
+						minrank = 5;
+					if (raw.match(/\[img[\s\S]*?\]/gi))
+						minrank = 6;
+					document.getElementById("btes_minrank").innerHTML = ("<img src=\"https://bitcointalk.org/Themes/custom1/images/star.gif\" alt=\"*\" border=\"0\">").repeat(minrank);
+					if (minrank == 0)
+						document.getElementById("btes_minrank").innerHTML = "<img src=\""+chrome.extension.getURL("images/newbie.png")+"\" alt=\"*\" border=\"0\">";
+					if (minrank == 6)
+						document.getElementById("btes_minrank").innerHTML = "<span style=\"color: red;\">Not usable as a signature</span>";
+					document.getElementById("btes_charcount").innerHTML = raw.length;
+				break;
+			}
+			// If the raw post length is greater than 64000 characters, it will be rejected by the forum software, so let the user know
+			if (raw.length > max_length) {
 				document.getElementById("btes_warning").setAttribute("style", "color: red;");
 			} else {
 				document.getElementById("btes_warning").setAttribute("style", "display: none;");
 			}
-			
-			// Display the number of characters that are original and "constructive"
-			document.getElementById("btes_charcount").innerHTML = count;
 		}, 1000);
 	});
 	
