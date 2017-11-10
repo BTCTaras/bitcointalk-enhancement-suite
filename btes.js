@@ -40,6 +40,8 @@
 			account_appraisals_relevant = false;
 	});
 	
+	var displayname = document.getElementById("hellomember").getElementsByTagName("b")[0].innerHTML;
+	
 	// Loop through sidebars of posts to apply changes to them
 	document.querySelectorAll(".poster_info").forEach(function(sidebar) {
 		var user = sidebar.getElementsByTagName("b")[0].getElementsByTagName("a")[0].innerHTML;
@@ -109,6 +111,16 @@
 					a.insertAdjacentHTML("beforebegin","<a href=\"https://www.bctalkaccountpricer.info/?token=\">Appraise</a>&nbsp;&bull;&nbsp;");
 				}
 			});
+	});
+	
+	// Loop through quotes in posts to highlight the ones quoting the user
+	document.querySelectorAll(".quoteheader").forEach(function(quoteheader) {
+		//var quotebody = quoteheader.nextSibling();
+		if (quoteheader.innerHTML.includes("Quote from: " + displayname + " on")) {
+			quoteheader.getElementsByTagName("a")[0].setAttribute("style", "color: orange;");
+			quoteheader.nextSibling.setAttribute("style", "border: 1px solid #f1d2be; background-color: #f9eee6;");
+		}
+		//quoteheader.innerHTML = displayname;
 	});
 		
 	// Delete the button to insert a flash video from the post editor - the feature is completely disabled on BitcoinTalk and therefore useless
