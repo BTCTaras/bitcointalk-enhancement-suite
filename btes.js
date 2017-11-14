@@ -100,7 +100,10 @@
 		if (dt_depth < 5) {
 			// Find the only trustscore div in the sidebar, if it exists
 			sidebar.querySelectorAll(".trustscore").forEach(function(a) {
-				a.insertAdjacentHTML("afterend","<b style=\"color: #008000;\"> <image src=\""+chrome.extension.getURL("images/defaulttrust.png")+"\" style=\"width: 16px; position: relative; top: 4px; margin-right: 2px;\">DT" + dt_depth + "</b>");
+				if (a.getAttribute("style") == "color:#DC143C") // Red trust?
+					a.insertAdjacentHTML("afterend","<b style=\"color: #DC143C;\" title=\"This user is in DefaultTrust depth " + dt_depth + ", but their feedback is not trusted because of their poor trust score.\"> <image src=\""+chrome.extension.getURL("images/defaulttrustred.png")+"\" style=\"width: 16px; position: relative; top: 4px; margin-right: 2px;\"><s>DT" + dt_depth + "</s></b>");
+				else
+					a.insertAdjacentHTML("afterend","<b style=\"color: #008000;\"> <image src=\""+chrome.extension.getURL("images/defaulttrust.png")+"\" style=\"width: 16px; position: relative; top: 4px; margin-right: 2px;\">DT" + dt_depth + "</b>");
 			});
 		}
 		

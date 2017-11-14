@@ -18,6 +18,7 @@
   "web_accessible_resources": [
 	"images/blacklist.gif",
 	"images/defaulttrust.png",
+	"images/defaulttrustred.png",
 	"images/scammer.gif",
 	"images/newbie.png",
 	"images/newhl.png",
