@@ -259,23 +259,24 @@
 	});
 	
 	// On the thread listing, highlight threads that have unread posts that the user distinguished as being important to them
-	document.querySelectorAll(".windowbg").forEach(function(potentialthreaddiv) {
-		// Determine if this page is a list of a user's posts
-		potentialthreaddiv.querySelectorAll("b").forEach(function(titlediv) {
-			var threadlink = titlediv.getElementsByTagName("span")[0].getElementsByTagName("a")[0];
-			var thread = threadlink.getAttribute("href").match(/[0-9]+/);
-			if (important_threads.includes(thread)) {
-				threadlink.innerHTML = thread;
-				threadlink.setAttribute("style", "color: goldenrod;");
-				potentialthreaddiv.setAttribute("style", "background-color: #F3F49C;");
-				potentialthreaddiv.getElementsByTagName("small")[0].querySelectorAll("a").forEach(function(pagelink) {
-					pagelink.setAttribute("style", "color: goldenrod;");
-				});
-				potentialthreaddiv.getElementsByClassName("newimg")[0].setAttribute("src", chrome.extension.getURL("images/newhl.png"));
-			}
-			//threadlink.nextSibling.getElementsByTagName("img")[0].setAttribute("src", chrome.extension.getURL("images/newhl.png"));
+	if (window.location.href.includes("?board=")) {
+		document.querySelectorAll(".windowbg").forEach(function(potentialthreaddiv) {
+			// Determine if this page is a list of a user's posts
+			potentialthreaddiv.querySelectorAll("b").forEach(function(titlediv) {
+				var threadlink = titlediv.getElementsByTagName("span")[0].getElementsByTagName("a")[0];
+				var thread = threadlink.getAttribute("href").match(/[0-9]+/);
+				if (important_threads.includes(thread)) {
+					threadlink.innerHTML = thread;
+					threadlink.setAttribute("style", "color: goldenrod;");
+					potentialthreaddiv.setAttribute("style", "background-color: #F3F49C;");
+					potentialthreaddiv.getElementsByTagName("small")[0].querySelectorAll("a").forEach(function(pagelink) {
+						pagelink.setAttribute("style", "color: goldenrod;");
+					});
+					potentialthreaddiv.getElementsByClassName("newimg")[0].setAttribute("src", chrome.extension.getURL("images/newhl.png"));
+				}
+			});
 		});
-	});
+	}
 	
 	// On the showposts page, if a post has a code block with a very long unbroken line, the table of posts will be distorted and very hard to read.
 	// This will fix that by limiting how wide code blocks can be drawn
