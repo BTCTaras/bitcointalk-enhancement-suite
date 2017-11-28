@@ -57,6 +57,18 @@
 			sidebar.getElementsByTagName("br")[0].insertAdjacentHTML("afterend", "<img src=\""+chrome.extension.getURL("images/newbie.png")+"\" alt=\"*\" border=\"0\">");
 		}
 		
+		// For copper members, change the color of the coins to look like they're copper
+		var rank = sidebar.getElementsByTagName("div")[0].innerHTML.substr(0,15)
+		if (rank.includes("Copper")) {
+			var icons = sidebar.getElementsByTagName("img");
+			for (var i = 0; i < icons.length; i++)
+				if (icons.item(i).getAttribute("alt") == "*")
+					if (icons.item(i).getAttribute("src").endsWith("star.gif"))
+						icons.item(i).setAttribute("src",chrome.extension.getURL("images/copper.png"));
+					else
+						icons.item(i).setAttribute("src",chrome.extension.getURL("images/copper5.png"));
+		}
+		
 		// Check if we should apply a blacklist tag
 		if (smasblacklisted.includes(user)) {
 			// Add a label to the tag

@@ -17,6 +17,8 @@
   ],
   "web_accessible_resources": [
 	"images/blacklist.gif",
+	"images/copper.png",
+	"images/copper5.png",
 	"images/defaulttrust.png",
 	"images/defaulttrustred.png",
 	"images/scammer.gif",
