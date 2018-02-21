@@ -206,47 +206,7 @@
 				break;
 				case "sig":
 					// Calculate what minimum rank user can wear the signature
-					if (raw.length > 50)
-						minrank = 1;
-					if (raw.match(/\[url[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[table[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[center[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[font[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[pre[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[left[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[right[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[email[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[ftp[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[sup[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[sub[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[tt[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[list[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[code[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[quote[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[b[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[i[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[u[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[s[\s\S]*?\]/gi))
-						minrank = 1;
-					if (raw.match(/\[hr[\s\S]*?\]/gi))
+					if ((raw.length > 50) || (raw.match(/\[(url|table|center|font|pre|left|right|email|ftp|su[bp]|tt|list|code|quote|[bius]|hr)[\s\S]*?\]/gi)))
 						minrank = 1;
 					if (raw.length > 150)
 						minrank = 2;
