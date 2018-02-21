@@ -27,20 +27,6 @@
 	var header = document.getElementById("variousheadlinks");
 	header.insertAdjacentHTML("afterend","<td class=\"windowbg\" style=\"text-align: center;\">BTES&nbsp;1.0.0<hr/><small><a>Thread</a><br/><a href=\"https://bitcointalk.org/index.php?action=profile;sa=theme;btes\">Settings</a></small></td>");
 	
-	var account_appraisals_relevant = false;
-	document.querySelectorAll(".nav").forEach(function(nav) {
-		if (nav.innerHTML == "Invites & Accounts")
-			account_appraisals_relevant = true;
-		if (nav.innerHTML == "Lending")
-			account_appraisals_relevant = true;
-		if (nav.innerHTML == "Meta")
-			account_appraisals_relevant = true;
-		if (nav.innerHTML == "New forum software")
-			account_appraisals_relevant = false;
-		if (nav.innerHTML == "Bitcoin Wiki")
-			account_appraisals_relevant = false;
-	});
-	
 	var displayname = document.getElementById("hellomember").getElementsByTagName("b")[0].innerHTML;
 	
 	// Loop through sidebars of posts to apply changes to them
@@ -118,15 +104,6 @@
 					a.insertAdjacentHTML("afterend","<b style=\"color: #008000;\"> <image src=\""+chrome.extension.getURL("images/defaulttrust.png")+"\" style=\"width: 16px; position: relative; top: 4px; margin-right: 2px;\">DT" + dt_depth + "</b>");
 			});
 		}
-		
-		// Add an "Appraise" button to sidebar links on boards where you are more likely to need to know the estimated value of an account
-		if (account_appraisals_relevant)
-			// First we loop through all the links in the sidebar until we reach the ignore button
-			sidebar.querySelectorAll("a").forEach(function(a) {
-				if (a.innerHTML == "Ignore") {
-					a.insertAdjacentHTML("beforebegin","<a href=\"https://www.bctalkaccountpricer.info/?token=\">Appraise</a>&nbsp;&bull;&nbsp;");
-				}
-			});
 	});
 	
 	// Loop through quotes in posts to highlight the ones quoting the user
