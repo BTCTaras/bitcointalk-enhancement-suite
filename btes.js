@@ -28,11 +28,24 @@
 	var header = document.getElementById("variousheadlinks");
 	var displayname = document.getElementById("hellomember").getElementsByTagName("b")[0].innerHTML;
 	
-	// Insert a window on the side of the header so that the user knows BTES is installed
-	header.insertAdjacentHTML("afterend","<td class=\"windowbg\" style=\"text-align: center;\">BTES&nbsp;1.0.0<hr/><small><a>Thread</a><br/><a href=\"https://bitcointalk.org/index.php?action=profile;sa=theme;btes\">Settings</a></small></td>");
-	
 	// Add a link to the header that shows the user's latest posts
 	header.getElementsByClassName("middletext")[0].getElementsByTagName("br")[1].insertAdjacentHTML("afterend","<a href=\"https://bitcointalk.org/index.php?action=profile;sa=showPosts\">Show your latest posts.</a><br/>");
+	
+	// Adjust the text of the header links to be more consistent with each other
+	header.getElementsByClassName("middletext")[0].querySelectorAll("a").forEach(function(headerlink) {
+		if (headerlink.innerHTML == "Show unread posts since last visit.") {
+			headerlink.innerHTML = "Show threads with unread posts.";
+		}
+		if (headerlink.innerHTML == "Patrol") {
+			headerlink.innerHTML = "Show recent posts patrol.";
+		}
+		if (headerlink.innerHTML == "Watchlist") {
+			headerlink.innerHTML = "Show updated threads on your watchlist.";
+		}
+	});
+	
+	// Insert a window on the side of the header so that the user knows BTES is installed
+	header.insertAdjacentHTML("afterend","<td class=\"windowbg\" style=\"text-align: center;\">BTES&nbsp;1.0.0<hr/><small><a>Thread</a><br/><a href=\"https://bitcointalk.org/index.php?action=profile;sa=theme;btes\">Settings</a></small></td>");
 	
 	// Loop through sidebars of posts to apply changes to them
 	document.querySelectorAll(".poster_info").forEach(function(sidebar) {
