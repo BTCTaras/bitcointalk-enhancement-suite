@@ -124,6 +124,15 @@
 		}
 	});
 	
+	// Loop through the posts themselves to make corrections
+	document.querySelectorAll(".post").forEach(function(post) {
+		post.innerHTML = post.innerHTML
+		// In numbered lists with right parentheses after the numbers, 8) gets interpreted as the "cool" smiley and breaks the list, an error which posters rarely correct
+			.replace(/(?<=1\).*<br>2\).*<br>3\).*<br>4\).*<br>5\).*<br>6\).*<br>7\).*<br>)<img src="https:\/\/bitcointalk\.org\/Smileys\/default\/cool\.gif" alt="Cool" border="0">/, "8)")
+		// In very long strings of question marks, where the number of question marks is not divisible by 3, you get an ugly combination of question marks and confused smileys, so just replace with all question marks
+			.replace(/(?<=\?(<img src="https:\/\/bitcointalk\.org\/Smileys\/default\/huh\.gif" alt="Huh" border="0">)*)<img src="https:\/\/bitcointalk\.org\/Smileys\/default\/huh\.gif" alt="Huh" border="0">/, "???");
+	});
+	
 	// Loop through quotes in posts to highlight the ones quoting the user
 	document.querySelectorAll(".quoteheader").forEach(function(quoteheader) {
 		if (quoteheader.innerHTML.includes("Quote from: " + displayname + " on")) {
@@ -176,6 +185,9 @@
 			
 			// Tags themselves shouldn't be considered to be content
 			content = content.replace(/\[[\s\S]*?\]/gi, "");
+			
+			// Smileys are really just images
+			content = content.replace(/(?<=^|\W)((:{1,2}|8|;)\)|[;:]D|\?{3}|:[oP]|:-[[X\\*]|(>?:|:')\()(?=$|\W)/g, "");
 			
 			var count = content.trim().length;
 			
