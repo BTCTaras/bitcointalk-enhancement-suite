@@ -1,4 +1,12 @@
 (function() {	
+	
+	// Mark the page so that the script only runs once
+	var title = document.querySelectorAll("body")[0];
+	if (title.getAttribute("id") != "btes")
+		title.setAttribute("id","btes");
+	else
+		return false;
+	
 	// The arrays below are as of 7/21/2017
 	// May add auto-updating lists in the future...
 
@@ -17,17 +25,14 @@
 	// Load this from storage later
 	var important_threads = ["1820695"];
 	
-	// Mark the page so that the script only runs once
-	var title = document.querySelectorAll("body")[0];
-	if (title.getAttribute("id") != "btes")
-		title.setAttribute("id","btes");
-	else
-		return false;
-	
 	var header = document.getElementById("variousheadlinks");
+	var displayname = document.getElementById("hellomember").getElementsByTagName("b")[0].innerHTML;
+	
+	// Insert a window on the side of the header so that the user knows BTES is installed
 	header.insertAdjacentHTML("afterend","<td class=\"windowbg\" style=\"text-align: center;\">BTES&nbsp;1.0.0<hr/><small><a>Thread</a><br/><a href=\"https://bitcointalk.org/index.php?action=profile;sa=theme;btes\">Settings</a></small></td>");
 	
-	var displayname = document.getElementById("hellomember").getElementsByTagName("b")[0].innerHTML;
+	// Add a link to the header that shows the user's latest posts
+	header.getElementsByClassName("middletext")[0].getElementsByTagName("br")[1].insertAdjacentHTML("afterend","<a href=\"https://bitcointalk.org/index.php?action=profile;sa=showPosts\">Show your latest posts.</a><br/>");
 	
 	// Loop through sidebars of posts to apply changes to them
 	document.querySelectorAll(".poster_info").forEach(function(sidebar) {
