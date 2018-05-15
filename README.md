@@ -25,3 +25,4 @@ Features:
 
 Disabled by default:
 *Legacy SCAMMER tags appear on accounts that had them before the trust system was added
+*SCAMMER tags appear on accounts with red trust
